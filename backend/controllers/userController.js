@@ -23,6 +23,10 @@ const authUser = asyncHandler(async (req, res) => {
 					isAdmin: user.isAdmin,
 					token: generateToken(user._id),
 				})
+			} else if (err) {
+				res.json({
+					message: 'error occured',
+				})
 			}
 			// {
 			// 	return res.json({
@@ -33,10 +37,15 @@ const authUser = asyncHandler(async (req, res) => {
 			// }
 			else {
 				res.status(401).json({
-					message: 'Invalid email or password',
+					message: 'Incorrect password',
 					success: false,
 				})
 			}
+		})
+	} else {
+		res.status(401).json({
+			message: "Account doesn't exist",
+			success: false,
 		})
 	}
 })
@@ -49,6 +58,31 @@ const getUserProfile = asyncHandler(async (req, res) => {
 			name: user.name,
 			email: user.email,
 			isAdmin: user.isAdmin,
+		})
+	} else {
+		res.status(404).json('User not found')
+	}
+})
+
+const updateUserProfile = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.user._id)
+
+	if (user) {
+		user.name = req.body.name || user.name
+		user.email = req.body.email || user.email
+		user.password = req.body.password || user.password
+
+		if (req.body.password) {
+			user.password = req.body.password
+		}
+
+		const updatedUser = await user.save()
+
+		res.json({
+			_id: updatedUser._id,
+			name: updatedUser.name,
+			email: updatedUser.email,
+			isAdmin: updatedUser.isAdmin,
 		})
 	} else {
 		res.status(404).json('User not found')
@@ -82,4 +116,4 @@ const registerUser = asyncHandler(async (req, res) => {
 	}
 })
 
-export { authUser, getUserProfile, registerUser }
+export { authUser, getUserProfile, registerUser, updateUserProfile }

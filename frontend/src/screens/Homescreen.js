@@ -1,20 +1,18 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-// import products from '../products';
-import Product from '../components/Product';
-import { Loader } from '../components/Loader';
-import { Row, Col } from 'react-bootstrap';
-import { listProducts } from '../actions/productActions';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import Product from '../components/Product'
+import { Loader } from '../components/Loader'
+import { Row, Col } from 'react-bootstrap'
+import { listProducts } from '../actions/productActions'
 
 const Homescreen = () => {
-	const dispatch = useDispatch();
+	const dispatch = useDispatch()
 
-	const productList = useSelector((state) => state.productList);
-	const { error, loading, products } = productList;
+	const productList = useSelector((state) => state.productList)
+	const { error, loading, products } = productList
 	useEffect(() => {
-		dispatch(listProducts());
-	}, [dispatch]);
+		dispatch(listProducts())
+	}, [dispatch])
 	// const products = [];
 	return (
 		<>
@@ -33,7 +31,7 @@ const Homescreen = () => {
 				</Row>
 			)}
 		</>
-	);
-};
+	)
+}
 
-export default Homescreen;
+export default Homescreen
