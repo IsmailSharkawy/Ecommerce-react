@@ -4,6 +4,7 @@ import connectDB from './config/db.js'
 
 import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
+import orderRoutes from './routes/orderRoutes.js'
 
 dotenv.config()
 
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/products', productRoutes) //anything using api products will be redirected to productRoutes
+app.use('/api/orders', orderRoutes) //anything using api products will be redirected to productRoutes
 
 app.use('/api/users', userRoutes) //anything using api user will be redirected to userRoutes
 

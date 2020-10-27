@@ -9,6 +9,9 @@ import { Cartscreen } from './screens/Cartscreen'
 import { LoginScreen } from './screens/LoginScreen'
 import { RegisterScreen } from './screens/RegisterScreen'
 import { ProfileScreen } from './screens/ProfileScreen'
+import ShippingScreen from './screens/ShippingScreen'
+import PaymentScreen from './screens/PaymentScreen'
+import PlaceOrder from './screens/PlaceOrder'
 
 const App = () => {
 	return (
@@ -16,14 +19,14 @@ const App = () => {
 			<Header />
 			<main className='py-3'>
 				<Container>
+					<Route path='/payment' component={PaymentScreen} />
+					<Route path='/placeorder' component={PlaceOrder} />
+					<Route path='/shipping' component={ShippingScreen} />
+					<Route path='/profile' component={ProfileScreen} />
 					<Route path='/' component={Homescreen} exact />
-					{/* match.params?? */}
 					<Route path='/product/:id' component={Productscreen} />
 					<Route path='/login' component={LoginScreen} />
-					<Route path='/profile' component={ProfileScreen} />
-
 					<Route path='/register' component={RegisterScreen} />
-
 					<Route path='/cart/:id?' component={Cartscreen} />
 					{/* id is optional incase we go to cart page in general */}
 				</Container>
