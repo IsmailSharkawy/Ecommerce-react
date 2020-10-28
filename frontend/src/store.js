@@ -12,6 +12,7 @@ import {
 	userRegisterReducer,
 	userUpdateReducer,
 } from './reducers/userReducers'
+import { createOrderReducer, getOrderReducer } from './reducers/orderReducers'
 
 const reducer = combineReducers({
 	productList: productListReducer,
@@ -21,6 +22,8 @@ const reducer = combineReducers({
 	userRegister: userRegisterReducer,
 	userDetails: userDetailsReducer,
 	userUpdate: userUpdateReducer,
+	createOrder: createOrderReducer,
+	getOrder: getOrderReducer,
 })
 const cartItemsFromStorage = localStorage.getItem('cartItems')
 	? JSON.parse(localStorage.getItem('cartItems'))
@@ -38,7 +41,7 @@ const initialState = {
 		cartItems: cartItemsFromStorage,
 		shippingAddress: shippingAddressFromStorage,
 	},
-	userLogin: { userInfoFromStorage },
+	userLogin: { userInfo: userInfoFromStorage },
 }
 const middleware = [thunk]
 const store = createStore(

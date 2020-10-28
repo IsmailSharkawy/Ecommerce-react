@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import {
 	Button,
-	Form,
 	Row,
 	Col,
 	ListGroup,
@@ -12,24 +11,43 @@ import {
 } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { createOrder } from '../actions/orderActions.js'
 import CheckoutSteps from '../components/CheckoutSteps.js'
 
-import FormContainer from '../components/FormContainer.js'
-
-const PlaceOrder = () => {
+const PlaceOrder = ({ history }) => {
 	const dispatch = useDispatch()
 	const cart = useSelector((state) => state.cart)
 	const { shippingAddress } = cart
-	const placeOrderHandler = () => {
-		console.log('order placed')
-	}
 
-	const itemsPrice = Number(
-		cart.cartItems.reduce((acc, item) => acc + item.price, 0)
+	cart.itemsPrice = Number(
+		cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
 	)
-	const shippingPrice = Number(cart.cartItems.price > 300 ? 0 : 50)
-	const taxPrice = Number((itemsPrice * 0.14).toFixed(3))
-	const totalPrice = Number(itemsPrice + shippingPrice + taxPrice).toFixed(2)
+	cart.shippingPrice = Number(cart.cartItems.price > 300 ? 0 : 50)
+	cart.taxPrice = Number((cart.itemsPrice * 0.14).toFixed(3))
+	cart.totalPrice = Number(
+		cart.itemsPrice + cart.shippingPrice + cart.taxPrice
+	).toFixed(2)
+
+	const orderCreate = useSelector((state) => state.createOrder)
+	const { success, error, order } = orderCreate
+
+	useEffect(() => {
+		if (success) history.push(`/order/${order._id}`)
+	}, [order, success, history])
+	const placeOrderHandler = (e) => {
+		e.preventDefault()
+		dispatch(
+			createOrder({
+				orderItems: cart.cartItems,
+				shippingAddress: cart.shippingAddress,
+				paymentMethod: cart.paymentMethod,
+				itemsPrice: cart.itemsPrice,
+				taxPrice: cart.taxPrice,
+				shippingPrice: cart.shippingPrice,
+				totalPrice: cart.totalPrice,
+			})
+		)
+	}
 
 	return (
 		<>
@@ -59,7 +77,7 @@ const PlaceOrder = () => {
 							) : (
 								<ListGroup variant='flush'>
 									{cart.cartItems.map((item, index) => (
-										<ListGroupItem>
+										<ListGroupItem key={item.name}>
 											<Row>
 												<Col md={3}>
 													<Image src={item.image} fluid rounded />
@@ -86,26 +104,29 @@ const PlaceOrder = () => {
 							<ListGroupItem>
 								<Row>
 									<Col>Items:</Col>
-									<Col>${itemsPrice}</Col>
+									<Col>${cart.itemsPrice}</Col>
 								</Row>
 							</ListGroupItem>
 							<ListGroupItem>
 								<Row>
 									<Col>Shipping:</Col>
-									<Col>${shippingPrice}</Col>
+									<Col>${cart.shippingPrice}</Col>
 								</Row>
 							</ListGroupItem>
 							<ListGroupItem>
 								<Row>
 									<Col>Tax:</Col>
-									<Col>${taxPrice}</Col>
+									<Col>${cart.taxPrice}</Col>
 								</Row>
 							</ListGroupItem>
 							<ListGroupItem>
 								<Row>
 									<Col>Total:</Col>
-									<Col>${totalPrice}</Col>
+									<Col>${cart.totalPrice}</Col>
 								</Row>
+							</ListGroupItem>
+							<ListGroupItem>
+								{error && <Alert variant='danger'>{error}</Alert>}
 							</ListGroupItem>
 							<ListGroupItem>
 								<Button

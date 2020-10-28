@@ -14,7 +14,7 @@ export const LoginScreen = ({ location, history }) => {
 
 	const userLogin = useSelector((state) => state.userLogin)
 	const { loading, error, userInfo } = userLogin
-
+	if (userInfo) localStorage.setItem('token', userLogin.userInfo.token)
 	useEffect(() => {
 		if (userInfo) {
 			history.push(redirect)
