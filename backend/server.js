@@ -23,6 +23,10 @@ app.use('/api/orders', orderRoutes) //anything using api products will be redire
 
 app.use('/api/users', userRoutes) //anything using api user will be redirected to userRoutes
 
+app.get('/api/config/paypal', (req, res) => {
+	res.send(process.env.PAYPAL_CLIENT_ID)
+})
+
 // app.use((err, req, res, next) => {
 // 	const statusCode = res.statusCode === 200 ? 500 : res.statusCode
 // 	res.status(statusCode)
