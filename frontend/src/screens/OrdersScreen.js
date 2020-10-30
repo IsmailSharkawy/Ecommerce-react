@@ -17,7 +17,7 @@ import { PayPalButton } from 'react-paypal-button-v2'
 import axios from 'axios'
 import { ORDER_PAY_RESET } from '../constants/orderConstants'
 
-const OrdersScreen = ({ match }) => {
+const OrdersScreen = ({ match, history }) => {
 	const dispatch = useDispatch()
 	const orderId = match.params.id
 
@@ -29,6 +29,9 @@ const OrdersScreen = ({ match }) => {
 	const orderPay = useSelector((state) => state.orderPay)
 	const { loading: loadingPay, success: successPay } = orderPay
 
+	const userLogin = useSelector((state) => state.userLogin)
+	const { userInfo } = userLogin
+
 	if (order) {
 		order.itemsPrice = order.orderItems.reduce(
 			(acc, item) => acc + item.price * item.qty,
@@ -36,6 +39,7 @@ const OrdersScreen = ({ match }) => {
 		)
 	}
 	useEffect(() => {
+		if (!userInfo) history.push('/login')
 		const addPayPalScript = async () => {
 			const { data: clientId } = await axios.get('/api/config/paypal')
 
@@ -59,7 +63,7 @@ const OrdersScreen = ({ match }) => {
 				setSdkReady(true)
 			}
 		}
-	}, [order, successPay, dispatch, orderId])
+	}, [order, successPay, dispatch, orderId, userInfo])
 
 	const successPaymentHandler = (paymentResult) => {
 		console.log(paymentResult)

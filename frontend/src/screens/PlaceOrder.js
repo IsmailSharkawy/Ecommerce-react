@@ -18,6 +18,8 @@ const PlaceOrder = ({ history }) => {
 	const dispatch = useDispatch()
 	const cart = useSelector((state) => state.cart)
 	const { shippingAddress } = cart
+	const userLogin = useSelector((state) => state.userLogin)
+	const { userInfo } = userLogin
 
 	cart.itemsPrice = Number(
 		cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
@@ -33,7 +35,8 @@ const PlaceOrder = ({ history }) => {
 
 	useEffect(() => {
 		if (success) history.push(`/order/${order._id}`)
-	}, [order, success, history])
+		if (!userInfo) history.push('/login')
+	}, [order, success, history, userInfo])
 	const placeOrderHandler = (e) => {
 		e.preventDefault()
 		dispatch(

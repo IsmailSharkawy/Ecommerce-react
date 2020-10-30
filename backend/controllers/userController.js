@@ -64,6 +64,36 @@ const getUserProfile = asyncHandler(async (req, res) => {
 	}
 })
 
+const getUsers = asyncHandler(async (req, res) => {
+	const users = await User.find({})
+	if (users) {
+		res.json(users)
+	} else {
+		res.status(404).json('No users exist')
+	}
+})
+
+const getUser = asyncHandler(async (req, res) => {
+	const user = await await User.findById(req.params.id).select('-password') //-password to get all info of user except password
+	if (user) {
+		res.json(user)
+	} else {
+		res.status(404).json('User no found')
+	}
+})
+
+const deleteUser = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.params.id)
+	if (user) {
+		await user.remove()
+		res.json({
+			message: 'User deleted',
+		})
+	} else {
+		res.status(404).json('User not found')
+	}
+})
+
 const updateUserProfile = asyncHandler(async (req, res) => {
 	const user = await User.findById(req.user._id)
 
@@ -75,6 +105,27 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 		if (req.body.password) {
 			user.password = req.body.password
 		}
+
+		const updatedUser = await user.save()
+
+		res.json({
+			_id: updatedUser._id,
+			name: updatedUser.name,
+			email: updatedUser.email,
+			isAdmin: updatedUser.isAdmin,
+		})
+	} else {
+		res.status(404).json('User not found')
+	}
+})
+
+const updateUser = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.params.id)
+
+	if (user) {
+		user.name = req.body.name || user.name
+		user.email = req.body.email || user.email
+		user.isAdmin = req.body.isAdmin
 
 		const updatedUser = await user.save()
 
@@ -116,4 +167,13 @@ const registerUser = asyncHandler(async (req, res) => {
 	}
 })
 
-export { authUser, getUserProfile, registerUser, updateUserProfile }
+export {
+	authUser,
+	getUserProfile,
+	registerUser,
+	updateUserProfile,
+	getUsers,
+	deleteUser,
+	getUser,
+	updateUser,
+}
