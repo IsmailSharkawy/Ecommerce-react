@@ -5,6 +5,9 @@ import {
 	ORDER_DETAILS_FAIL,
 	ORDER_DETAILS_REQUEST,
 	ORDER_DETAILS_SUCCESS,
+	ORDER_LIST_FAIL,
+	ORDER_LIST_REQUEST,
+	ORDER_LIST_SUCCESS,
 	ORDER_MY_LIST_FAIL,
 	ORDER_MY_LIST_REQUEST,
 	ORDER_MY_LIST_SUCCESS,
@@ -161,7 +164,7 @@ export const shipOrder = (order) => async (dispatch, getState) => {
 		console.log('hi')
 		const { data } = await axios.put(
 			`/api/orders/${order._id}/ship`,
-
+			{},
 			config
 		)
 		console.log('hi2')
@@ -170,6 +173,36 @@ export const shipOrder = (order) => async (dispatch, getState) => {
 	} catch (error) {
 		dispatch({
 			type: ORDER_SHIP_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
+}
+
+export const getOrders = () => async (dispatch, getState) => {
+	try {
+		dispatch({ type: ORDER_LIST_REQUEST })
+
+		const {
+			userLogin: { userInfo },
+		} = getState()
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+		console.log('hi')
+		const { data } = await axios.get(`/api/orders`, config)
+		console.log('hi2')
+
+		dispatch({ type: ORDER_LIST_SUCCESS, payload: data })
+	} catch (error) {
+		dispatch({
+			type: ORDER_LIST_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

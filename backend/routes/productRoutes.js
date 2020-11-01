@@ -1,5 +1,12 @@
 import express from 'express'
-import { getProductById, getProduct } from '../controllers/productContoller.js'
+import {
+	getProductById,
+	getProduct,
+	deleteProduct,
+	updateProduct,
+	createProduct,
+} from '../controllers/productContoller.js'
+import { protect, admin } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -7,12 +14,16 @@ const router = express.Router()
 //@route GET /api/products
 //@access public
 
-router.get('/', getProduct)
+router.route('/').get(getProduct).post(protect, admin, createProduct)
 
 //@desc Fetch single products
 //@route GET /api/products/:id
 //@access public
 
-router.get('/:id', getProductById)
+router
+	.route('/:id')
+	.get(getProductById)
+	.delete(protect, admin, deleteProduct)
+	.put(protect, admin, updateProduct)
 
 export default router

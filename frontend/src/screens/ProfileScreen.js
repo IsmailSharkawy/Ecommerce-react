@@ -161,7 +161,11 @@ export const ProfileScreen = ({ location, history }) => {
 									</td>
 									<td>
 										{order.isDelivered ? (
-											order.deliveredAt.substring(0, 10)
+											order.deliveredAt
+												.substring(0, 10)
+												.split('-')
+												.reverse()
+												.join('-')
 										) : (
 											<i
 												className='fas fa-times'

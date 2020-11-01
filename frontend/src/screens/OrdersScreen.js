@@ -12,10 +12,10 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Loader } from '../components/Loader'
-import { getOrderById, payOrder } from '../actions/orderActions.js'
+import { getOrderById, payOrder, shipOrder } from '../actions/orderActions.js'
 import { PayPalButton } from 'react-paypal-button-v2'
 import axios from 'axios'
-import { ORDER_PAY_RESET } from '../constants/orderConstants'
+import { ORDER_PAY_RESET, ORDER_SHIP_RESET } from '../constants/orderConstants'
 
 const OrdersScreen = ({ match, history }) => {
 	const dispatch = useDispatch()
@@ -28,6 +28,9 @@ const OrdersScreen = ({ match, history }) => {
 
 	const orderPay = useSelector((state) => state.orderPay)
 	const { loading: loadingPay, success: successPay } = orderPay
+
+	const orderShip = useSelector((state) => state.orderShip)
+	const { loading: loadingShip, success: successShip } = orderShip
 
 	const userLogin = useSelector((state) => state.userLogin)
 	const { userInfo } = userLogin
@@ -53,8 +56,10 @@ const OrdersScreen = ({ match, history }) => {
 			document.body.appendChild(script)
 		}
 
-		if (!order || successPay) {
+		if (!order || successPay || successShip || order._id != orderId) {
 			dispatch({ type: ORDER_PAY_RESET })
+			dispatch({ type: ORDER_SHIP_RESET })
+
 			dispatch(getOrderById(orderId))
 		} else if (!order.isPaid) {
 			if (!window.paypal) {
@@ -63,13 +68,16 @@ const OrdersScreen = ({ match, history }) => {
 				setSdkReady(true)
 			}
 		}
-	}, [order, successPay, dispatch, orderId, userInfo])
+	}, [order, successPay, dispatch, orderId, userInfo, history, successShip])
 
 	const successPaymentHandler = (paymentResult) => {
 		console.log(paymentResult)
 		dispatch(payOrder(orderId, paymentResult))
 	}
 
+	const shipHandler = () => {
+		dispatch(shipOrder(order))
+	}
 	return loading ? (
 		<Loader />
 	) : error ? (
@@ -97,11 +105,9 @@ const OrdersScreen = ({ match, history }) => {
 								{order.shippingAddress.country}
 							</p>
 							{order.isDelivered ? (
-								<Alert variant='success'>
-									Delivered on {order.deliveredAt}
-								</Alert>
+								<Alert variant='success'>Shipped on {order.deliveredAt}</Alert>
 							) : (
-								<Alert variant='danger'>Not Delivered</Alert>
+								<Alert variant='danger'>Not Shipped</Alert>
 							)}
 						</ListGroupItem>
 						<ListGroupItem>
@@ -171,6 +177,8 @@ const OrdersScreen = ({ match, history }) => {
 									<Col>${order.totalPrice}</Col>
 								</Row>
 							</ListGroupItem>
+							{loadingShip && <Loader />}
+
 							{!order.isPaid && (
 								<ListGroupItem>
 									{loadingPay && <Loader />}
@@ -182,6 +190,18 @@ const OrdersScreen = ({ match, history }) => {
 											onSuccess={successPaymentHandler}
 										/>
 									)}
+								</ListGroupItem>
+							)}
+
+							{userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+								<ListGroupItem>
+									<Button
+										type='button'
+										className='btn btn-block'
+										onClick={shipHandler}
+									>
+										Mark as shipped
+									</Button>
 								</ListGroupItem>
 							)}
 						</ListGroup>
