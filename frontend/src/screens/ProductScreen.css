@@ -1,0 +1,25 @@
+@media all and (min-device-width: 768px) and (max-device-width: 988px) {
+	.details-column {
+		display: inline-block;
+		position: relative;
+		max-width: 300%;
+		width: 60%;
+	}
+
+	.img-col {
+		display: block;
+		height: 30px;
+	}
+	.img-col img {
+		height: 25vh;
+		width: 30vh;
+	}
+	.btn-col {
+		position: absolute;
+		max-width: 300%;
+		height: 20px;
+		width: 30vh;
+		left: 5%;
+		top: 43%;
+	}
+}

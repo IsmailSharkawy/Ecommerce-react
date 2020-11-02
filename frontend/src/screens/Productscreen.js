@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { listProductDetails, createReview } from '../actions/productActions'
 import { Loader } from '../components/Loader'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
+import './ProductScreen.css'
 
 const Productscreen = ({ match, history }) => {
 	const [qty, setQty] = useState(1)
@@ -68,10 +69,10 @@ const Productscreen = ({ match, history }) => {
 			) : (
 				<>
 					<Row>
-						<Col md={6}>
+						<Col md={6} className='img-col'>
 							<Image src={product.image} alt={product.name} fluid />
 						</Col>
-						<Col md={3}>
+						<Col md={3} className='details-column'>
 							<ListGroup variant='flush'>
 								<ListGroupItem>
 									<h3>{product.name}</h3>
@@ -88,7 +89,7 @@ const Productscreen = ({ match, history }) => {
 								</ListGroupItem>
 							</ListGroup>
 						</Col>
-						<Col md={3}>
+						<Col md={3} className='btn-col'>
 							<Card>
 								<ListGroup>
 									<ListGroupItem>
@@ -154,7 +155,7 @@ const Productscreen = ({ match, history }) => {
 					</Row>
 					<Row>
 						<Col md={6}>
-							<h2>Reviews:</h2>
+							<h2 style={{ margin: '15px' }}>Reviews:</h2>
 							{reviewError && <Alert variant='danger'>{reviewError}</Alert>}
 							{product.reviews.length === 0 && <Alert>No reviews</Alert>}
 							<ListGroup variant='flush'>
