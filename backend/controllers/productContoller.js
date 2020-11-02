@@ -6,8 +6,27 @@ import asyncHandler from 'express-async-handler' //to not have to implement erro
 //@access public
 
 const getProduct = asyncHandler(async (req, res) => {
-	const products = await Product.find({}) //mongoose methods return a promise so use awair async
-	res.json(products)
+	const keyword = req.query.keyword // ? in get request
+		? {
+				name: {
+					$regex: req.query.keyword,
+					$options: 'i', //case insensitive
+				},
+		  }
+		: {}
+
+	const pageSize = 2
+	const page = Number(req.query.pageNumber) || 1
+
+	const count = await Product.countDocuments({ ...keyword })
+	const products = await Product.find({ ...keyword })
+		.limit(pageSize)
+		.skip(pageSize * (page - 1)) //mongoose methods return a promise so use await async
+	res.json({
+		products,
+		page,
+		pages: Math.ceil(count / pageSize),
+	})
 })
 
 //@desc Fetch single products
@@ -72,10 +91,50 @@ const updateProduct = asyncHandler(async (req, res) => {
 	} else res.status(404).json({ message: 'Product not found' })
 })
 
+const createReview = asyncHandler(async (req, res) => {
+	const product = await Product.findById(req.params.id)
+	const { rating, comment } = req.body
+	if (product) {
+		const alreadyReviewed = product.reviews.find(
+			(r) => r.user.toString() === req.user._id.toString()
+		)
+		if (alreadyReviewed) {
+			res.status(400).json({ message: 'Product already reviewed' })
+		} else {
+			const review = {
+				name: req.user.name,
+				rating: Number(rating),
+				comment,
+				user: req.user._id,
+			}
+			product.reviews.push(review)
+
+			product.numReviews = product.reviews.length
+
+			product.rating =
+				product.reviews.reduce((acc, review) => review.rating + acc, 0) /
+				product.reviews.length
+
+			await product.save()
+			res.status(201).json({ message: 'Review added' })
+		}
+	} else res.status(404).json({ message: 'Product not found' })
+})
+
+const topProducts = asyncHandler(async (req, res) => {
+	const products = await Product.find({}).sort('-1').limit(3)
+
+	if (products) {
+		res.json(products)
+	} else res.status(404).json({ message: 'Not enough products' })
+})
+
 export {
 	getProduct,
 	getProductById,
 	deleteProduct,
 	createProduct,
 	updateProduct,
+	createReview,
+	topProducts,
 }

@@ -31,7 +31,14 @@ const App = () => {
 					<Route path='/shipping' component={ShippingScreen} />
 					<Route path='/profile' component={ProfileScreen} />
 
+					<Route path='/page/:pageNumber' component={Homescreen} exact />
 					<Route path='/' component={Homescreen} exact />
+
+					<Route
+						path='/search/:keyword/page/:pageNumber'
+						component={Homescreen}
+					/>
+
 					<Route path='/product/:id' component={Productscreen} />
 					<Route path='/login' component={LoginScreen} />
 					<Route path='/register' component={RegisterScreen} />
@@ -39,7 +46,16 @@ const App = () => {
 					{/* id is optional incase we go to cart page in general */}
 					<Route path='/admin/userslist' component={UsersListScreen} />
 					<Route path='/admin/user/:id/edit' component={UserEditScreen} />
-					<Route path='/admin/productslist' component={ProductsListScreen} />
+					<Route
+						path='/admin/productslist'
+						component={ProductsListScreen}
+						exact
+					/>
+					<Route
+						path='/admin/productslist/:pageNumber'
+						component={ProductsListScreen}
+					/>
+
 					<Route path='/admin/product/:id/edit' component={ProductEditScreen} />
 					<Route path='/admin/orderslist' component={OrdersListScreen} />
 				</Container>

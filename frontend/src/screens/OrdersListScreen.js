@@ -20,10 +20,6 @@ const OrdersListScreen = ({ history }) => {
 		}
 	}, [dispatch, userInfo, history])
 
-	const deleteHandler = (id) => {
-		//if(window.confirm('Are you sure')) if i want a pop up confirmation window
-		// dispatch(deleteUser(id))
-	}
 	return (
 		<Fragment>
 			{loading ? (
