@@ -193,17 +193,21 @@ const OrdersScreen = ({ match, history }) => {
 								</ListGroupItem>
 							)}
 
-							{userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-								<ListGroupItem>
-									<Button
-										type='button'
-										className='btn btn-block'
-										onClick={shipHandler}
-									>
-										Mark as shipped
-									</Button>
-								</ListGroupItem>
-							)}
+							{userInfo
+								? userInfo.isAdmin &&
+								  order.isPaid &&
+								  !order.isDelivered && (
+										<ListGroupItem>
+											<Button
+												type='button'
+												className='btn btn-block'
+												onClick={shipHandler}
+											>
+												Mark as shipped
+											</Button>
+										</ListGroupItem>
+								  )
+								: null}
 						</ListGroup>
 					</Card>
 				</Col>
