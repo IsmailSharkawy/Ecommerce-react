@@ -86,6 +86,60 @@ h2 {
 	height: 300px;
 	padding: 20px;
 	margin: 80px;
-	left: 285px;
+	left: 26%;
 	border-radius: 50%;
+}
+
+@media all and (max-device-width: 400px) {
+	.carousel img {
+		position: relative;
+		height: 300px;
+		padding: 70px;
+		margin: 80px;
+		left: -22%;
+		border-radius: 50%;
+	}
+}
+
+@media all and (min-device-width: 401px) and (max-device-width: 479px) {
+	.carousel img {
+		position: relative;
+		height: 300px;
+		padding: 50px;
+		margin: 80px;
+		left: -15%;
+		border-radius: 50%;
+	}
+}
+
+@media all and (min-device-width: 481px) and (max-device-width: 800px) {
+	.carousel img {
+		position: relative;
+		height: 300px;
+		padding: 50px;
+		margin: 80px;
+		left: 14%;
+		border-radius: 50%;
+	}
+}
+
+@media all and (min-device-width: 1000px) and (max-device-width: 1365) {
+	.carousel img {
+		position: relative;
+		height: 300px;
+		padding: 50px;
+		margin: 80px;
+		left: 22%;
+		border-radius: 50%;
+	}
+}
+@media all and (min-device-width: 1366px) {
+	.carousel img {
+		position: relative;
+		height: 300px;
+		padding: 50px;
+		margin: 80px;
+		left: 27%;
+		border-radius: 50%;
+	}
 }
