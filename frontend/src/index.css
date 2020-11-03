@@ -137,9 +137,9 @@ h2 {
 	.carousel img {
 		position: relative;
 		height: 300px;
-		padding: 50px;
+		padding: 0;
 		margin: 80px;
-		left: 27%;
+		left: 26%;
 		border-radius: 50%;
 	}
 }

@@ -148,6 +148,11 @@ const Productscreen = ({ match, history }) => {
 										>
 											Add to Cart
 										</Button>
+										{product.countInStock < 3 && product.countInStock > 0 ? (
+											<Alert variant='warning'>
+												Only {product.countInStock} left!
+											</Alert>
+										) : null}
 									</ListGroupItem>
 								</ListGroup>
 							</Card>
