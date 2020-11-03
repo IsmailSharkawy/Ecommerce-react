@@ -69,10 +69,11 @@ const Productscreen = ({ match, history }) => {
 			) : (
 				<>
 					<Row>
-						<Col md={6} className='img-col'>
+						<Col md={6} lg={6} className='img-col'>
 							<Image src={product.image} alt={product.name} fluid />
 						</Col>
-						<Col md={3} className='details-column'>
+
+						<Col md={6} lg={6} className='details-column'>
 							<ListGroup variant='flush'>
 								<ListGroupItem className='prod-title'>
 									<h3>{product.name}</h3>
@@ -83,13 +84,13 @@ const Productscreen = ({ match, history }) => {
 										text={`${product.numReviews} reviews`}
 									/>
 								</ListGroupItem>
-								<ListGroupItem>Price: ${product.price}</ListGroupItem>
+
 								<ListGroupItem className='description'>
 									Description: {product.description}
 								</ListGroupItem>
 							</ListGroup>
 						</Col>
-						<Col md={3} className='btn-col'>
+						<Col md={6} lg={6} className='btn-col'>
 							<Card>
 								<ListGroup>
 									<ListGroupItem>
@@ -165,7 +166,7 @@ const Productscreen = ({ match, history }) => {
 							{product.reviews.length === 0 && <Alert>No reviews</Alert>}
 							<ListGroup variant='flush'>
 								{product.reviews.map((review) => (
-									<ListGroupItem>
+									<ListGroupItem key={review.user}>
 										<p>{review.createdAt.substring(0, 10)}</p>
 										<strong>{review.name}:</strong>
 										<Rating value={review.rating} />
