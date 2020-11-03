@@ -80,9 +80,9 @@ const updateProduct = asyncHandler(async (req, res) => {
 	if (product) {
 		product.name = name
 		product.price = price
-		product.category = category
-		product.brand = brand
-		product.description = description
+		if (!category === '') product.category = category
+		if (!brand === '') product.brand = brand
+		if (!description === '') product.description = description
 		product.image = image
 		product.countInStock = countInStock
 

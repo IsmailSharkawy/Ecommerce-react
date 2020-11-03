@@ -22,4 +22,18 @@
 		left: 5%;
 		top: 43%;
 	}
+	.description {
+		width: 130%;
+	}
+	h3 {
+		width: 150%;
+		font-size: 1.2rem;
+	}
+	h2 {
+		padding-top: 30px;
+	}
+
+	.prod-title {
+		text-align: justify;
+	}
 }

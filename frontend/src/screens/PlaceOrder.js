@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { createOrder } from '../actions/orderActions.js'
+import { updateProduct } from '../actions/productActions.js'
 import CheckoutSteps from '../components/CheckoutSteps.js'
 
 const PlaceOrder = ({ history }) => {
@@ -50,6 +51,21 @@ const PlaceOrder = ({ history }) => {
 				totalPrice: cart.totalPrice,
 			})
 		)
+		cart.cartItems.map((item, index) =>
+			dispatch(
+				updateProduct({
+					_id: item.product,
+					countInStock: item.countInStock - item.qty,
+					name: item.name,
+
+					price: item.price,
+					category: '',
+					brand: '',
+					description: '',
+					image: item.image,
+				})
+			)
+		)
 	}
 
 	return (
@@ -86,7 +102,10 @@ const PlaceOrder = ({ history }) => {
 													<Image src={item.image} fluid rounded />
 												</Col>
 												<Col md={4}>
-													<Link to={`/product/item.product`}>{item.name}</Link>
+													<p>Quantity:{item.qty}</p>
+													<Link to={`/product/${item.product._id}`}>
+														{item.name}
+													</Link>
 												</Col>
 												<Col md={3}>${item.qty * item.price}</Col>
 											</Row>

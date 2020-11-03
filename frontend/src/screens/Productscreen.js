@@ -74,7 +74,7 @@ const Productscreen = ({ match, history }) => {
 						</Col>
 						<Col md={3} className='details-column'>
 							<ListGroup variant='flush'>
-								<ListGroupItem>
+								<ListGroupItem className='prod-title'>
 									<h3>{product.name}</h3>
 								</ListGroupItem>
 								<ListGroupItem>
@@ -84,7 +84,7 @@ const Productscreen = ({ match, history }) => {
 									/>
 								</ListGroupItem>
 								<ListGroupItem>Price: ${product.price}</ListGroupItem>
-								<ListGroupItem>
+								<ListGroupItem className='description'>
 									Description: {product.description}
 								</ListGroupItem>
 							</ListGroup>
@@ -155,7 +155,7 @@ const Productscreen = ({ match, history }) => {
 					</Row>
 					<Row>
 						<Col md={6}>
-							<h2 style={{ margin: '15px' }}>Reviews:</h2>
+							<h2 style={{ margin: '16px' }}>Reviews:</h2>
 							{reviewError && <Alert variant='danger'>{reviewError}</Alert>}
 							{product.reviews.length === 0 && <Alert>No reviews</Alert>}
 							<ListGroup variant='flush'>

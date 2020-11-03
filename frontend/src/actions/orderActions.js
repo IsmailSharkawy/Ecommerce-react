@@ -21,7 +21,7 @@ import {
 
 import axios from 'axios'
 
-export const createOrder = (order) => async (dispatch, getState) => {
+export const createOrder = (order, count) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: ORDER_CREATE_REQUEST })
 
@@ -34,6 +34,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
 				Authorization: `Bearer ${userInfo.token}`,
 			},
 		}
+
 		console.log('hi')
 		const { data } = await axios.post(`/api/orders`, order, config)
 		console.log('hi2')
