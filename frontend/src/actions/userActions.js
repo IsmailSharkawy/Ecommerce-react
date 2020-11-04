@@ -11,6 +11,9 @@ import {
 	USER_EDIT_FAIL,
 	USER_EDIT_REQUEST,
 	USER_EDIT_SUCCESS,
+	USER_IN_CHAT_FAIL,
+	USER_IN_CHAT_REQUEST,
+	USER_IN_CHAT_SUCCESS,
 	USER_LIST_FAIL,
 	USER_LIST_REQUEST,
 	USER_LIST_SUCCESS,
@@ -229,6 +232,35 @@ export const userEditDetails = (user) => async (dispatch, getState) => {
 	} catch (error) {
 		dispatch({
 			type: USER_EDIT_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
+}
+
+export const getUsersInChat = () => async (dispatch, getState) => {
+	try {
+		dispatch({ type: USER_IN_CHAT_REQUEST })
+
+		const {
+			userLogin: { userInfo },
+		} = getState()
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+		console.log('hi')
+		const { data } = await axios.get(`/api/users/live`, config)
+		console.log('hi2')
+
+		dispatch({ type: USER_IN_CHAT_SUCCESS, payload: data })
+	} catch (error) {
+		dispatch({
+			type: USER_IN_CHAT_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

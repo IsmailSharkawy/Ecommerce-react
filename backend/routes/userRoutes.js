@@ -7,6 +7,7 @@ import {
 	getUsers,
 	deleteUser,
 	getUser,
+	getUsersInChat,
 	updateUser,
 } from '../controllers/userController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
@@ -22,6 +23,8 @@ router
 	.route('/profile')
 	.get(protect, getUserProfile)
 	.put(protect, updateUserProfile)
+router.route('/live').get(protect, admin, getUsersInChat)
+
 router
 	.route('/:id')
 	.delete(protect, admin, deleteUser)

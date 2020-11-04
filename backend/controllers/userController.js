@@ -22,6 +22,7 @@ const authUser = asyncHandler(async (req, res) => {
 					email: user.email,
 					isAdmin: user.isAdmin,
 					token: generateToken(user._id),
+					inChat: user.inChat,
 				})
 			} else if (err) {
 				res.json({
@@ -126,6 +127,7 @@ const updateUser = asyncHandler(async (req, res) => {
 		user.name = req.body.name || user.name
 		user.email = req.body.email || user.email
 		user.isAdmin = req.body.isAdmin
+		user.inChat = req.body.inChat
 
 		const updatedUser = await user.save()
 
@@ -134,9 +136,20 @@ const updateUser = asyncHandler(async (req, res) => {
 			name: updatedUser.name,
 			email: updatedUser.email,
 			isAdmin: updatedUser.isAdmin,
+			inChat: updatedUser.inChat,
 		})
 	} else {
 		res.status(404).json('User not found')
+	}
+})
+
+const getUsersInChat = asyncHandler(async (req, res) => {
+	const users = await User.find({ inChat: true })
+
+	if (users) {
+		res.json(users)
+	} else {
+		res.status(404).json('No users in chat')
 	}
 })
 
@@ -161,6 +174,7 @@ const registerUser = asyncHandler(async (req, res) => {
 			email: user.email,
 			isAdmin: user.isAdmin,
 			token: generateToken(user._id),
+			inChat: false,
 		})
 	} else {
 		res.status(401).json('User not found')
@@ -176,4 +190,5 @@ export {
 	deleteUser,
 	getUser,
 	updateUser,
+	getUsersInChat,
 }

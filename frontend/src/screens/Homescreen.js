@@ -7,6 +7,7 @@ import { Row, Col } from 'react-bootstrap'
 import Paginate from '../components/Paginate'
 import { listProducts } from '../actions/productActions'
 import TopCarousel from '../components/TopCarousel'
+import { userEditDetails } from '../actions/userActions'
 
 const Homescreen = ({ match }) => {
 	const dispatch = useDispatch()
@@ -14,7 +15,19 @@ const Homescreen = ({ match }) => {
 	const pageNumber = match.params.pageNumber
 	const productList = useSelector((state) => state.productList)
 	const { error, loading, products, pages, page } = productList
+	const userLogin = useSelector((state) => state.userLogin)
+	const { userInfo } = userLogin
 	useEffect(() => {
+		dispatch(
+			userEditDetails({
+				_id: userInfo._id,
+				inChat: false,
+				isAdmin: userInfo.isAdmin,
+			})
+		)
+		if (userInfo) {
+			userInfo.inChat = false
+		}
 		dispatch(listProducts(keyword, pageNumber))
 	}, [dispatch, keyword, pageNumber])
 	// const products = [];

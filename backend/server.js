@@ -2,6 +2,9 @@ import express from 'express'
 import dotenv from 'dotenv'
 import connectDB from './config/db.js'
 import path from 'path'
+import http from 'http'
+import socketio from 'socket.io'
+
 import morgan from 'morgan'
 import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
@@ -13,6 +16,45 @@ dotenv.config()
 connectDB()
 
 const app = express()
+const server = http.createServer(app)
+
+const io = socketio(server)
+
+//working with io
+io.on('connection', (socket) => {
+	console.log('we have a new connection!')
+
+	socket.on('join', ({ name, room }, callback) => {
+		socket.join(room)
+		socket.emit('message', {
+			user: 'admin',
+			text: `Welcome to live support ${name}, please wait...`,
+		})
+		socket.broadcast
+			.to(room)
+			.emit('message', { user: 'admin', text: `${name} has joined!` })
+		socket.username = name
+		socket.room = room
+
+		console.log('name:', socket.username)
+		console.log('room:', socket.room)
+
+		callback()
+	})
+
+	socket.on('sendMessage', ({ room, name }, message, callback) => {
+		io.to(room).emit('message', { user: name, text: message })
+		callback()
+	})
+
+	socket.on('disconnect', () => {
+		socket.broadcast
+			.to(socket.room)
+			.emit('message', { user: 'admin', text: `${socket.username} has left!` })
+
+		// socket.disconnect(room)
+	})
+})
 
 if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'))
@@ -55,7 +97,7 @@ if (process.env.NODE_ENV === 'production') {
 // 	})
 // })
 const PORT = process.env.PORT || 5000
-app.listen(
+server.listen(
 	PORT,
 	console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`)
 )

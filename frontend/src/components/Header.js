@@ -22,6 +22,16 @@ const Header = () => {
 					<Navbar.Brand href='/'>LimitleShop</Navbar.Brand>
 					<Navbar.Toggle aria-controls='basic-navbar-nav' />
 					<Navbar.Collapse id='basic-navbar-nav'>
+						{userInfo && (
+							<Nav className='mx-5'>
+								<LinkContainer to='/contactus'>
+									<Nav.Link className='px-4'>
+										<i className='fas fa-phone-alt'></i> Contact Us
+									</Nav.Link>
+								</LinkContainer>
+							</Nav>
+						)}
+
 						<Route
 							render={({ match, history }) => <SearchBox history={history} />} //to pass history to search box as a prop
 						/>
@@ -58,6 +68,9 @@ const Header = () => {
 									</LinkContainer>
 									<LinkContainer to='/admin/orderslist'>
 										<NavDropdown.Item>Orders</NavDropdown.Item>
+									</LinkContainer>
+									<LinkContainer to='/admin/live'>
+										<NavDropdown.Item>Live Assist</NavDropdown.Item>
 									</LinkContainer>
 								</NavDropdown>
 							)}
