@@ -5,6 +5,7 @@ import path from 'path'
 import http from 'http'
 import socketio from 'socket.io'
 
+import WebSocket from 'ws'
 import morgan from 'morgan'
 import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
@@ -16,7 +17,9 @@ dotenv.config()
 connectDB()
 
 const app = express()
+http.wsEngine = 'ws'
 const server = http.createServer(app)
+// const io = require('socket.io')(httpServer, { wsEngine: 'ws' });
 
 const io = socketio(server)
 
