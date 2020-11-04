@@ -22,8 +22,8 @@ const LiveChatScreen = ({ match, history }) => {
 	const { userInfo } = userLogin
 
 	const userId = match.params.id
-	const ENDPOINT = 'localhost:5000'
-	// const ENDPOINT = 'https://limitleshop.herokuapp.com/'
+	// const ENDPOINT = 'localhost:5000'
+	const ENDPOINT = 'https://limitleshop.herokuapp.com/'
 
 	useEffect(() => {
 		if (!userInfo) {
