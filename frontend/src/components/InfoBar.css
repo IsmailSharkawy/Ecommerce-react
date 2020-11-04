@@ -9,16 +9,18 @@
 }
 
 .leftInnerContainer {
-	flex: 0.5;
+	flex: 0.8;
 	display: flex;
 	align-items: center;
 	margin-left: 5%;
+	overflow: hidden;
+
 	color: white;
 }
 
 .rightInnerContainer {
 	display: flex;
-	flex: 0.5;
+	flex: 0.2;
 	justify-content: flex-end;
 	margin-right: 5%;
 }

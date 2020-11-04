@@ -9,7 +9,7 @@ const InfoBar = ({ room }) => {
 			</div>
 			<div className='rightInnerContainer'>
 				<a href='/'>
-					<i className='fas fa-times-circle fa-3x'></i>
+					<i className='fas fa-times-circle fa-2x'></i>
 				</a>
 			</div>
 		</div>

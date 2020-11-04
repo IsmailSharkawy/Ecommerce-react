@@ -22,17 +22,10 @@ const LiveChatScreen = ({ match, history }) => {
 	const { userInfo } = userLogin
 
 	const userId = match.params.id
-	// const ENDPOINT = 'localhost:5000'
-	const ENDPOINT = 'https://limitleshop.herokuapp.com/'
+	const ENDPOINT = 'localhost:5000'
+	// const ENDPOINT = 'https://limitleshop.herokuapp.com/'
 
 	useEffect(() => {
-		dispatch(
-			userEditDetails({
-				_id: userInfo._id,
-				inChat: true,
-				isAdmin: userInfo.isAdmin,
-			})
-		)
 		if (!userInfo) {
 			history.push('/login')
 		} else {
@@ -40,13 +33,19 @@ const LiveChatScreen = ({ match, history }) => {
 			console.log(socket)
 
 			socket.emit('join', { name: userInfo.name, room: userId }, () => {
-				// if (!userInfo.idAdmin) {
-				userInfo.inChat = true
-				console.log(userInfo.inChat)
-				// }
+				if (!userInfo.isAdmin) {
+					if (userInfo)
+						dispatch(
+							userEditDetails({
+								_id: userInfo._id,
+								inChat: true,
+								isAdmin: userInfo.isAdmin,
+							})
+						)
+				}
 			})
 		}
-	}, [ENDPOINT, userId, userInfo])
+	}, [ENDPOINT, userId, userInfo, dispatch])
 
 	useEffect(() => {
 		if (!userInfo) {
@@ -97,7 +96,6 @@ const LiveChatScreen = ({ match, history }) => {
 					</>
 				)}
 			</div>
-			{/* <TextContainer users={users}/> */}
 		</div>
 	)
 }

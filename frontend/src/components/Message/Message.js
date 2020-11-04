@@ -12,19 +12,25 @@ const Message = ({ message: { text, user }, name }) => {
 	}
 
 	return isSentByCurrentUser ? (
-		<div className='messageContainer justifyEnd'>
-			<h6>{name}:</h6>
-			<div className='messageBox backgroundBlue'>
-				<p className='messageText colorWhite'>{ReactEmoji.emojify(text)}</p>
+		<>
+			<h6 style={{ marginRight: '10px', textAlign: 'right' }}>{name}:</h6>
+			<div className='messageContainer justifyEnd'>
+				<div className='messageBox backgroundBlue'>
+					<p className='messageText colorWhite'>{ReactEmoji.emojify(text)}</p>
+				</div>
 			</div>
-		</div>
+			<br />
+		</>
 	) : (
-		<div className='messageContainer justifyStart'>
-			<h6>{user}:</h6>
-			<div className='messageBox backgroundLight'>
-				<p className='messageText colorDark'>{ReactEmoji.emojify(text)}</p>
+		<>
+			<h6 style={{ marginLeft: '10px' }}>{user}:</h6>
+			<div className='messageContainer justifyStart'>
+				<div className='messageBox backgroundLight'>
+					<p className='messageText colorDark'>{ReactEmoji.emojify(text)}</p>
+				</div>
 			</div>
-		</div>
+			<br />
+		</>
 	)
 }
 
