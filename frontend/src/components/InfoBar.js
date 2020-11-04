@@ -5,11 +5,11 @@ const InfoBar = ({ room }) => {
 	return (
 		<div className='infoBar'>
 			<div className='leftInnerContainer'>
-				<h6>Room:{room}</h6>
+				<h3>Room:{room}</h3>
 			</div>
 			<div className='rightInnerContainer'>
 				<a href='/'>
-					<i className='fas fa-times-circle fa-2x'></i>
+					<i className='fas fa-times-circle fa-3x'></i>
 				</a>
 			</div>
 		</div>
