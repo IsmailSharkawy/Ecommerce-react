@@ -18,19 +18,18 @@ const Homescreen = ({ match }) => {
 	const userLogin = useSelector((state) => state.userLogin)
 	const { userInfo } = userLogin
 	useEffect(() => {
-		dispatch(
-			userEditDetails({
-				_id: userInfo._id,
-				inChat: false,
-				isAdmin: userInfo.isAdmin,
-			})
-		)
 		if (userInfo) {
-			userInfo.inChat = false
+			dispatch(
+				userEditDetails({
+					_id: userInfo._id,
+					inChat: false,
+					isAdmin: userInfo.isAdmin,
+				})
+			)
 		}
 		dispatch(listProducts(keyword, pageNumber))
 	}, [dispatch, keyword, pageNumber])
-	// const products = [];
+
 	return (
 		<>
 			{!keyword ? (
