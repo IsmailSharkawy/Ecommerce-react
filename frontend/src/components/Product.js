@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Card, Alert, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Rating from './Rating'
+import './Products.css'
 import { addToFavorites, removeFromFavorites } from '../actions/productActions'
 
 const Product = ({ product }) => {
@@ -55,7 +56,7 @@ const Product = ({ product }) => {
 				<Card.Body>
 					<Link to={`/product/${product._id}`}>
 						<Card.Title>
-							<strong style={{ fontSize: '15px' }}>{product.name}</strong>
+							<strong style={{ fontSize: '14px' }}>{product.name}</strong>
 						</Card.Title>
 					</Link>
 					<Card.Text as='div'>

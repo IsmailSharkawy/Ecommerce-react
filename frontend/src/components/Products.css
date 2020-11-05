@@ -1,0 +1,8 @@
+@media (min-width: 763px) and (max-width: 1200px) {
+	.card-title {
+		height: 20px;
+	}
+	.col-md-6 {
+		padding: 24px;
+	}
+}
