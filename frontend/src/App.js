@@ -21,6 +21,7 @@ import OrdersListScreen from './screens/OrdersListScreen'
 import ContactUsScreen from './screens/ContactUsScreen'
 import LiveChatScreen from './screens/LiveChatScreen'
 import UsersInLive from './screens/UsersInLive'
+import FavoritesScreen from './screens/FavoritesScreen'
 
 const App = () => {
 	return (
@@ -36,6 +37,7 @@ const App = () => {
 					<Route path='/admin/live' component={UsersInLive} />
 
 					<Route path='/contactus' component={ContactUsScreen} />
+					<Route path='/favorites' component={FavoritesScreen} />
 
 					<Route path='/page/:pageNumber' component={Homescreen} exact />
 					<Route path='/' component={Homescreen} exact />

@@ -13,6 +13,9 @@ import {
 	PRODUCT_DETAILS_FAIL,
 	PRODUCT_DETAILS_REQUEST,
 	PRODUCT_DETAILS_SUCCESS,
+	PRODUCT_FROM_FAVORITES_FAIL,
+	PRODUCT_FROM_FAVORITES_REQUEST,
+	PRODUCT_FROM_FAVORITES_SUCCESS,
 	PRODUCT_LIST_FAIL,
 	PRODUCT_LIST_REQUEST,
 	PRODUCT_LIST_SUCCESS,
@@ -23,6 +26,13 @@ import {
 	PRODUCT_UPDATE_REQUEST,
 	PRODUCT_UPDATE_RESET,
 	PRODUCT_UPDATE_SUCCESS,
+	PRODUCT_GET_FAVORITES_REQUEST,
+	PRODUCT_GET_FAVORITES_FAIL,
+	PRODUCT_GET_FAVORITES_SUCCESS,
+	PRODUCT_TO_FAVORITES_FAIL,
+	PRODUCT_TO_FAVORITES_REQUEST,
+	PRODUCT_TO_FAVORITES_SUCCESS,
+	PRODUCT_FROM_FAVORITES_RESET,
 } from '../constants/productConstants'
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -131,6 +141,56 @@ export const topProductsReducer = (state = { products: [] }, action) => {
 		case PRODUCT_TOP_SUCCESS:
 			return { success: true, loading: false, products: action.payload }
 		case PRODUCT_TOP_FAIL:
+			return { loading: false, error: action.payload }
+
+		default:
+			return state
+	}
+}
+
+export const favoriteProductsAddReducer = (state = {}, action) => {
+	switch (action.type) {
+		case PRODUCT_TO_FAVORITES_REQUEST:
+			return { loading: true }
+
+		case PRODUCT_TO_FAVORITES_SUCCESS:
+			return { success: true, loading: false }
+		case PRODUCT_TO_FAVORITES_FAIL:
+			return { loading: false, error: action.payload }
+
+		default:
+			return state
+	}
+}
+
+export const favoriteProductsRemoveReducer = (state = {}, action) => {
+	switch (action.type) {
+		case PRODUCT_FROM_FAVORITES_REQUEST:
+			return { loading: true }
+
+		case PRODUCT_FROM_FAVORITES_SUCCESS:
+			return { success: true, loading: false }
+		case PRODUCT_FROM_FAVORITES_FAIL:
+			return { loading: false, error: action.payload }
+		case PRODUCT_FROM_FAVORITES_RESET:
+			return {}
+
+		default:
+			return state
+	}
+}
+
+export const favoriteProductsGetReducer = (
+	state = { products: [] },
+	action
+) => {
+	switch (action.type) {
+		case PRODUCT_GET_FAVORITES_REQUEST:
+			return { loading: true, products: [] }
+
+		case PRODUCT_GET_FAVORITES_SUCCESS:
+			return { success: true, loading: false, products: action.payload }
+		case PRODUCT_GET_FAVORITES_FAIL:
 			return { loading: false, error: action.payload }
 
 		default:

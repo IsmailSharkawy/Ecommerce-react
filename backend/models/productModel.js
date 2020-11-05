@@ -4,6 +4,7 @@ const reviewSchema = mongoose.Schema(
 	{
 		name: { type: String, required: true },
 		rating: { type: Number, required: true },
+
 		comment: { type: String, required: true },
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -65,6 +66,7 @@ const productSchema = mongoose.Schema(
 			required: true,
 			default: 0,
 		},
+		favoritedBy: [String],
 	},
 	{
 		timestamps: true,

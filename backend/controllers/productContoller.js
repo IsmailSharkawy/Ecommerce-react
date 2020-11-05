@@ -29,6 +29,14 @@ const getProduct = asyncHandler(async (req, res) => {
 	})
 })
 
+const getProducts = asyncHandler(async (req, res) => {
+	const products = await Product.find({})
+
+	res.json({
+		products,
+	})
+})
+
 //@desc Fetch single products
 //@route GET /api/products/:id
 //@access public
@@ -36,6 +44,40 @@ const getProductById = asyncHandler(async (req, res) => {
 	const product = await Product.findById(req.params.id)
 
 	if (product) {
+		res.json(product)
+	} else res.status(404).json({ message: 'Product not found' })
+})
+
+const addToFavorites = asyncHandler(async (req, res) => {
+	const product = await Product.findById(req.params.id)
+	console.log(product.user)
+
+	if (product) {
+		if (!product.favoritedBy.includes(req.body.id))
+			product.favoritedBy.push(req.body.id)
+
+		await product.save()
+		res.json(product)
+	} else res.status(404).json({ message: 'Product not found' })
+})
+
+const getFromFavorites = asyncHandler(async (req, res) => {
+	// const id = req.params.id.toString()
+	console.log(req.params.id)
+	const products = await Product.find({ favoritedBy: req.params.id })
+
+	if (products) {
+		res.json(products)
+	} else res.status(404).json({ message: 'Products not found' })
+})
+
+const removeFromFavorites = asyncHandler(async (req, res) => {
+	const product = await Product.findById(req.params.id)
+	console.log(product.user)
+	if (product) {
+		product.favoritedBy.pop(req.body.id)
+		await product.save()
+
 		res.json(product)
 	} else res.status(404).json({ message: 'Product not found' })
 })
@@ -137,4 +179,8 @@ export {
 	updateProduct,
 	createReview,
 	topProducts,
+	addToFavorites,
+	removeFromFavorites,
+	getFromFavorites,
+	getProducts,
 }

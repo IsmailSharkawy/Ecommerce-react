@@ -9,6 +9,9 @@ import {
 	productUpdateReducer,
 	createReviewReducer,
 	topProductsReducer,
+	favoriteProductsGetReducer,
+	favoriteProductsRemoveReducer,
+	favoriteProductsAddReducer,
 } from './reducers/productReducers'
 import { cartReducer } from './reducers/cartReducers'
 import {
@@ -53,6 +56,9 @@ const reducer = combineReducers({
 	createReview: createReviewReducer,
 	topProducts: topProductsReducer,
 	usersInChat: usersInChatReducer,
+	favoriteProductsGet: favoriteProductsGetReducer,
+	favoriteProductsRemove: favoriteProductsRemoveReducer,
+	favoriteProductsAdd: favoriteProductsAddReducer,
 })
 const cartItemsFromStorage = localStorage.getItem('cartItems')
 	? JSON.parse(localStorage.getItem('cartItems'))

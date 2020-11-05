@@ -12,12 +12,21 @@ import {
 	PRODUCT_DETAILS_FAIL,
 	PRODUCT_DETAILS_REQUEST,
 	PRODUCT_DETAILS_SUCCESS,
+	PRODUCT_FROM_FAVORITES_FAIL,
+	PRODUCT_FROM_FAVORITES_REQUEST,
+	PRODUCT_FROM_FAVORITES_SUCCESS,
+	PRODUCT_GET_FAVORITES_FAIL,
+	PRODUCT_GET_FAVORITES_REQUEST,
+	PRODUCT_GET_FAVORITES_SUCCESS,
 	PRODUCT_LIST_FAIL,
 	PRODUCT_LIST_REQUEST,
 	PRODUCT_LIST_SUCCESS,
 	PRODUCT_TOP_FAIL,
 	PRODUCT_TOP_REQUEST,
 	PRODUCT_TOP_SUCCESS,
+	PRODUCT_TO_FAVORITES_FAIL,
+	PRODUCT_TO_FAVORITES_REQUEST,
+	PRODUCT_TO_FAVORITES_SUCCESS,
 	PRODUCT_UPDATE_FAIL,
 	PRODUCT_UPDATE_REQUEST,
 	PRODUCT_UPDATE_SUCCESS,
@@ -199,6 +208,100 @@ export const getTopProducts = () => async (dispatch, getState) => {
 	} catch (error) {
 		dispatch({
 			type: PRODUCT_TOP_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
+}
+
+export const addToFavorites = (productId, userId) => async (
+	dispatch,
+	getState
+) => {
+	try {
+		dispatch({ type: PRODUCT_TO_FAVORITES_REQUEST })
+		const {
+			userLogin: { userInfo },
+		} = getState()
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+
+		const { data } = await axios.put(
+			`/api/products/${productId}/add`,
+			userId,
+			config
+		)
+
+		dispatch({ type: PRODUCT_TO_FAVORITES_SUCCESS, payload: data })
+	} catch (error) {
+		dispatch({
+			type: PRODUCT_TO_FAVORITES_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
+}
+
+export const getFromFavorites = (id) => async (dispatch, getState) => {
+	try {
+		dispatch({ type: PRODUCT_GET_FAVORITES_REQUEST })
+		const {
+			userLogin: { userInfo },
+		} = getState()
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+
+		const { data } = await axios.get(`/api/products/${id}/get`, config)
+
+		dispatch({ type: PRODUCT_GET_FAVORITES_SUCCESS, payload: data })
+	} catch (error) {
+		dispatch({
+			type: PRODUCT_GET_FAVORITES_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		})
+	}
+}
+
+export const removeFromFavorites = (productId, userId) => async (
+	dispatch,
+	getState
+) => {
+	try {
+		dispatch({ type: PRODUCT_FROM_FAVORITES_REQUEST })
+		const {
+			userLogin: { userInfo },
+		} = getState()
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		}
+		const { data } = await axios.put(
+			`/api/products/${productId}/remove`,
+			userId,
+			config
+		)
+
+		dispatch({ type: PRODUCT_FROM_FAVORITES_SUCCESS, payload: data })
+	} catch (error) {
+		dispatch({
+			type: PRODUCT_FROM_FAVORITES_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message
