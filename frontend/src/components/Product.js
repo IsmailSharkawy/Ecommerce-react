@@ -14,14 +14,15 @@ const Product = ({ product }) => {
 	console.log(product.name.replace(/\s/g, ''))
 	useEffect(() => {
 		{
-			if (product)
-				product.favoritedBy.includes(userInfo._id)
-					? (document.querySelector(
-							`#${product.name.replace(/\s/g, '')}`
-					  ).innerText = 'UNFAVORITE')
-					: (document.querySelector(
-							`#${product.name.replace(/\s/g, '')}`
-					  ).innerText = 'FAVORITE')
+			if (userInfo)
+				if (product)
+					product.favoritedBy.includes(userInfo._id)
+						? (document.querySelector(
+								`#${product.name.replace(/\s/g, '')}`
+						  ).innerText = 'UNFAVORITE')
+						: (document.querySelector(
+								`#${product.name.replace(/\s/g, '')}`
+						  ).innerText = 'FAVORITE')
 		}
 	}, [product, dispatch])
 	const submitHandler = () => {
