@@ -5,6 +5,8 @@ import path from "path";
 import http from "http";
 import socketio from "socket.io";
 
+import fs from "fs";
+import https from "https";
 import WebSocket from "ws";
 import morgan from "morgan";
 import productRoutes from "./routes/productRoutes.js";
@@ -107,6 +109,23 @@ if (process.env.NODE_ENV === "production") {
 // 	})
 // })
 const PORT = process.env.PORT || 5001;
+
+if (process.env.NODE_ENV === "production") {
+  const options = {
+    key: fs.readFileSync(
+      "/etc/letsencrypt/live/limitles2.duckdns.org/privkey.pem"
+    ),
+    cert: fs.readFileSync(
+      "/etc/letsencrypt/live/limitles2.duckdns.org/fullchain.pem"
+    ),
+  };
+
+  // Create an HTTPS server
+  https.createServer(options, app).listen(443, () => {
+    console.log("HTTPS Server running on port 443");
+  });
+}
+
 server.listen(
   PORT,
   console.log(`Server running in ${process.env.NODE_ENV} on port ${PORT}`)
