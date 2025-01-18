@@ -110,21 +110,21 @@ if (process.env.NODE_ENV === "production") {
 // })
 const PORT = process.env.PORT || 5001;
 
-if (process.env.NODE_ENV === "production") {
-  const options = {
-    key: fs.readFileSync(
-      "/etc/letsencrypt/live/limitles2.duckdns.org/privkey.pem"
-    ),
-    cert: fs.readFileSync(
-      "/etc/letsencrypt/live/limitles2.duckdns.org/fullchain.pem"
-    ),
-  };
+// if (process.env.NODE_ENV === "production") {
+//   const options = {
+//     key: fs.readFileSync(
+//       "/etc/letsencrypt/live/limitles2.duckdns.org/privkey.pem"
+//     ),
+//     cert: fs.readFileSync(
+//       "/etc/letsencrypt/live/limitles2.duckdns.org/fullchain.pem"
+//     ),
+//   };
 
-  // Create an HTTPS server
-  https.createServer(options, app).listen(443, () => {
-    console.log("HTTPS Server running on port 443");
-  });
-}
+//   // Create an HTTPS server
+//   https.createServer(options, app).listen(443, () => {
+//     console.log("HTTPS Server running on port 443");
+//   });
+// }
 
 server.listen(
   PORT,
